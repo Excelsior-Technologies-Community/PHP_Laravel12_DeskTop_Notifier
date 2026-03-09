@@ -1,59 +1,263 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# PHP_Laravel12_DeskTop_Notifier
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+![Laravel](https://img.shields.io/badge/Laravel-12-red)
+![PHP](https://img.shields.io/badge/PHP-8.2-blue)
+![Package](https://img.shields.io/badge/Package-laravel--desktop--notifier-green)
 
-## About Laravel
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+# Overview
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+During development, many Laravel commands take time to complete. This project integrates the **Laravel Desktop Notifier package** to automatically send a **Windows desktop notification** after a command finishes.
 
-## Learning Laravel
+The notification includes:
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+* Notification Title
+* Notification Message
+* Optional Custom Icon
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Internally the package uses:
 
-## Laravel Sponsors
+* **JoliNotif**
+* **SnoreToast (Windows Notification Tool)**
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+---
 
-### Premium Partners
+# Features
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+* Works with **Laravel 12**
+* Sends **desktop notifications from Artisan commands**
+* Supports **custom notification icons**
+* Improves developer workflow
+* Easy integration with existing Laravel projects
+* Useful for long-running commands
 
-## Contributing
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+---
 
-## Code of Conduct
+#  Folder Structure
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+```
+PHP_Laravel12_DeskTop_Notifier
+│
+├── app
+│   └── Console
+│       └── Commands
+│           └── SendDesktopNotification.php
+│
+├── public
+│   └── logo.png
+│
+├── routes
+│   └── web.php
+│
+├── resources
+├── storage
+├── vendor
+│
+├── composer.json
+└── artisan
+```
 
-## Security Vulnerabilities
+---
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+# Requirements
 
-## License
+Before installing the project, ensure your system has:
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+* PHP **8.2+**
+* Composer
+* Laravel **12**
+* Windows OS
+* XAMPP / Laravel Herd / Local development environment
+
+---
+
+# Step 1 — Install Laravel 12
+
+Open your terminal and run:
+
+```
+composer create-project laravel/laravel PHP_Laravel12_DeskTop_Notifier
+```
+
+Check the installation:
+
+```
+php artisan serve
+```
+
+Open the browser:
+
+```
+http://127.0.0.1:8000
+```
+
+If the Laravel welcome page appears, the installation is successful.
+
+## .env
+```
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=laravel
+DB_USERNAME=root
+DB_PASSWORD=
+```
+
+---
+
+# Step 2 — Install Desktop Notifier Package
+
+Install the notification package using Composer:
+
+```
+composer require nunomaduro/laravel-desktop-notifier
+```
+
+This package allows Laravel commands to use the **notify() method** to trigger desktop notifications.
+
+Internally it uses:
+
+* JoliNotif
+* SnoreToast (Windows Notification Tool)
+
+---
+
+# Step 3 — Create an Artisan Command
+
+Generate a new command:
+
+```
+php artisan make:command SendDesktopNotification
+```
+
+Laravel will create the file:
+
+```
+app/Console/Commands/SendDesktopNotification.php
+```
+
+---
+
+# Step 4 — Add Command Code
+
+Open the file:
+
+```
+app/Console/Commands/SendDesktopNotification.php
+```
+
+Replace the code with the following:
+
+```php
+<?php
+
+namespace App\Console\Commands;
+
+use Illuminate\Console\Command;
+
+class SendDesktopNotification extends Command
+{
+    protected $signature = 'notify:desktop';
+
+    protected $description = 'Send Desktop Notification with Icon';
+
+    public function handle()
+    {
+        $this->info("Starting Process...");
+
+        // simulate long running task
+        sleep(3);
+
+        $this->info("Process Completed!");
+
+        // send notification with icon
+        $this->notify(
+            'Laravel Desktop Notifier',
+            'Your Laravel command finished successfully!',
+            public_path('logo.png')
+        );
+
+        return Command::SUCCESS;
+    }
+}
+```
+
+This command will:
+
+1. Start a task
+2. Wait 3 seconds
+3. Finish the task
+4. Send a desktop notification with an icon
+
+---
+
+# Step 5 — Add Notification Icon
+
+Place an icon image inside the **public folder**.
+
+Example:
+
+```
+public/logo.png
+```
+<img width="194" height="117" alt="Screenshot 2026-03-09 160112" src="https://github.com/user-attachments/assets/7821935f-3b5d-474c-9614-1eac182e9f1e" />
+
+---
+
+# Step 6 — Verify Command Registration
+
+Run the following command:
+
+```
+php artisan list
+```
+
+You should see:
+
+<img width="490" height="37" alt="Screenshot 2026-03-09 160618" src="https://github.com/user-attachments/assets/92908c2b-8fde-4ce4-95dc-019158b33f76" />
+
+---
+Laravel 11 and Laravel 12 automatically detect commands inside:
+
+```
+app/Console/Commands
+```
+
+So **Kernel.php is not required**.
+
+---
+
+# Step 7 — Run the Command
+
+Execute the command:
+
+```
+php artisan notify:desktop
+```
+
+Terminal output:
+
+```
+Starting Process...
+Process Completed!
+```
+
+After execution, a **Windows desktop notification popup will appear with the icon**.
+
+<img width="1673" height="321" alt="Screenshot 2026-03-09 152621" src="https://github.com/user-attachments/assets/d252eafd-d1fc-46c5-b070-eb46b2c7f01f" />
+
+
+---
+
+# Advantages
+
+* No need to watch the terminal constantly
+* Useful for long-running commands
+* Improves development workflow
+* Easy to integrate into any Laravel project
+
+---
+
