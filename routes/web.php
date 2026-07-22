@@ -18,7 +18,6 @@ Route::get('/notify', function () {
         '--delay' => 2,
     ]);
 
-
     return redirect('/')
         ->with('success', 'Desktop Notification Sent Successfully!');
 });

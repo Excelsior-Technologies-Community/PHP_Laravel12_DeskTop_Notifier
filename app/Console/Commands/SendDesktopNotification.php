@@ -55,4 +55,5 @@ class SendDesktopNotification extends Command
 
         return Command::SUCCESS;
     }
+    
 }
