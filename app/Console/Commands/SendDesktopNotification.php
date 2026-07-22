@@ -19,6 +19,10 @@ class SendDesktopNotification extends Command
         $title = $this->argument('title') ?? 'Laravel Desktop Notifier';
         $message = $this->argument('message') ?? 'Your Laravel command finished successfully!';
         $type = strtolower($this->option('type'));
+
+        if (! in_array($type, ['success', 'warning', 'error', 'info'])) {
+            $type = 'info';
+        }
         $delay = (int) $this->option('delay');
 
         $this->info("Starting Process...");
@@ -45,6 +49,10 @@ class SendDesktopNotification extends Command
                 break;
         }
 
+        if (! file_exists($icon)) {
+            $icon = public_path('logo.png');
+        }
+
         $this->info("Process Completed!");
 
         $this->notify(
@@ -55,5 +63,4 @@ class SendDesktopNotification extends Command
 
         return Command::SUCCESS;
     }
-    
 }
