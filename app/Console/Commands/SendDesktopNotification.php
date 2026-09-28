@@ -2,7 +2,9 @@
 
 namespace App\Console\Commands;
 
+use App\Models\NotificationHistory;
 use Illuminate\Console\Command;
+use Throwable;
 
 class SendDesktopNotification extends Command
 {
@@ -16,51 +18,88 @@ class SendDesktopNotification extends Command
 
     public function handle()
     {
-        $title = $this->argument('title') ?? 'Laravel Desktop Notifier';
-        $message = $this->argument('message') ?? 'Your Laravel command finished successfully!';
+        $title = $this->argument('title')
+            ?? 'Laravel Desktop Notifier';
+
+        $message = $this->argument('message')
+            ?? 'Your Laravel command finished successfully!';
+
         $type = strtolower($this->option('type'));
 
-        if (! in_array($type, ['success', 'warning', 'error', 'info'])) {
+        if (! in_array($type, [
+            'success',
+            'warning',
+            'error',
+            'info'
+        ])) {
             $type = 'info';
         }
-        $delay = (int) $this->option('delay');
 
-        $this->info("Starting Process...");
-        $this->info("Notification Type : {$type}");
-        $this->info("Waiting {$delay} second(s)...");
+        $delay = max(0, (int) $this->option('delay'));
 
-        sleep($delay);
-
-        switch ($type) {
-            case 'success':
-                $icon = public_path('success.png');
-                break;
-
-            case 'warning':
-                $icon = public_path('warning.png');
-                break;
-
-            case 'error':
-                $icon = public_path('error.png');
-                break;
-
-            default:
-                $icon = public_path('logo.png');
-                break;
-        }
+        $icon = match ($type) {
+            'success' => public_path('success.png'),
+            'warning' => public_path('warning.png'),
+            'error' => public_path('error.png'),
+            default => public_path('logo.png'),
+        };
 
         if (! file_exists($icon)) {
             $icon = public_path('logo.png');
         }
 
-        $this->info("Process Completed!");
+        $history = NotificationHistory::create([
+            'title' => $title,
+            'message' => $message,
+            'type' => $type,
+            'icon' => basename($icon),
+            'delay' => $delay,
+            'status' => 'sent',
+            'source' => 'artisan',
+            'sent_at' => now(),
+        ]);
 
-        $this->notify(
-            $title,
-            $message,
-            $icon
-        );
+        try {
 
-        return Command::SUCCESS;
+            $this->info("Starting Process...");
+            $this->info("Notification Type : {$type}");
+            $this->info("Waiting {$delay} second(s)...");
+
+            if ($delay > 0) {
+                sleep($delay);
+            }
+
+            $this->info("Process Completed!");
+
+            $this->notify(
+                $title,
+                $message,
+                $icon
+            );
+
+            $history->update([
+                'status' => 'sent',
+                'sent_at' => now(),
+            ]);
+
+            $this->info("Desktop Notification Sent Successfully!");
+
+            return Command::SUCCESS;
+
+        } catch (Throwable $e) {
+
+            $history->update([
+                'status' => 'failed',
+                'error_message' => $e->getMessage(),
+                'sent_at' => now(),
+            ]);
+
+            $this->error(
+                "Desktop Notification Failed: "
+                . $e->getMessage()
+            );
+
+            return Command::FAILURE;
+        }
     }
 }
