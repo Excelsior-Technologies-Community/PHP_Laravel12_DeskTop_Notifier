@@ -401,6 +401,14 @@
 
                                     </button>
 
+                                    <a
+                                        href="{{ route('notifications.dashboard') }}"
+                                        class="btn btn-dark btn-lg">
+
+                                        📊 Notification Dashboard
+
+                                    </a>
+
                                 </div>
 
                             </form>
@@ -709,7 +717,7 @@
             updatePreview();
 
         });
-        
+
 
         // -------------------------
 
