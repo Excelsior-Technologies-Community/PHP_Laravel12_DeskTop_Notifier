@@ -124,6 +124,18 @@
                     Send professional desktop notifications with templates, preview, browser notifications and custom settings.
                 </p>
 
+                <div class="d-flex justify-content-center gap-2 mt-3 flex-wrap">
+                    <a href="{{ route('notifications.dashboard') }}" class="btn btn-outline-primary rounded-pill px-3">
+                        <i class="bi bi-speedometer2"></i> Dashboard
+                    </a>
+                    <a href="{{ route('notifications.studio') }}" class="btn btn-outline-purple rounded-pill px-3" style="border-color:#7c3aed; color:#7c3aed;">
+                        <i class="bi bi-sliders"></i> Studio & Tone Customizer
+                    </a>
+                    <a href="{{ route('notifications.analytics') }}" class="btn btn-outline-info rounded-pill px-3">
+                        <i class="bi bi-bar-chart-line-fill"></i> Delivery Analytics
+                    </a>
+                </div>
+
             </div>
 
             @if(session('success'))

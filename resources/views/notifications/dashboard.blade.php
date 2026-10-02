@@ -135,7 +135,29 @@
 
             </div>
 
-            <div class="mt-3 mt-md-0">
+            <div class="mt-3 mt-md-0 d-flex gap-2 flex-wrap">
+
+                <a
+                    href="{{ route('notifications.studio') }}"
+                    class="btn btn-outline-light"
+                >
+
+                    <i class="bi bi-sliders"></i>
+
+                    Studio
+
+                </a>
+
+                <a
+                    href="{{ route('notifications.analytics') }}"
+                    class="btn btn-outline-light"
+                >
+
+                    <i class="bi bi-bar-chart-line-fill"></i>
+
+                    Analytics
+
+                </a>
 
                 <a
                     href="{{ url('/') }}"
