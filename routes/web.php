@@ -87,3 +87,37 @@ Route::delete(
     '/notifications/scheduled/{scheduledNotification}',
     [NotificationController::class, 'destroyScheduled']
 )->name('notifications.scheduled.destroy');
+
+
+/*
+|--------------------------------------------------------------------------
+| Desktop Notification Studio & Live Sound/Icon Tester
+|--------------------------------------------------------------------------
+*/
+
+Route::get(
+    '/notifications/studio',
+    [NotificationController::class, 'studio']
+)->name('notifications.studio');
+
+Route::post(
+    '/notifications/studio/trigger',
+    [NotificationController::class, 'triggerStudioNotification']
+)->name('notifications.studio.trigger');
+
+
+/*
+|--------------------------------------------------------------------------
+| Notification Delivery Analytics & Interaction Dashboard
+|--------------------------------------------------------------------------
+*/
+
+Route::get(
+    '/notifications/analytics',
+    [NotificationController::class, 'analytics']
+)->name('notifications.analytics');
+
+Route::post(
+    '/notifications/record-click/{notificationHistory}',
+    [NotificationController::class, 'recordClick']
+)->name('notifications.record-click');

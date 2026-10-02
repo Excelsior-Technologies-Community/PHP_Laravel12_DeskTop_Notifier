@@ -14,10 +14,15 @@ class NotificationHistory extends Model
         'message',
         'type',
         'icon',
+        'sound_tone',
+        'priority',
+        'action_url',
         'delay',
         'status',
         'source',
         'error_message',
+        'is_clicked',
+        'clicked_at',
         'sent_at',
     ];
 
@@ -25,7 +30,9 @@ class NotificationHistory extends Model
     {
         return [
             'sent_at' => 'datetime',
+            'clicked_at' => 'datetime',
             'delay' => 'integer',
+            'is_clicked' => 'boolean',
         ];
     }
 }
